@@ -1,0 +1,76 @@
+version: '3.8'
+
+services:
+  mysqldb:
+    image: mysql:8.0
+    container_name: test_bk_fe_mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-ABCD123abcd.}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-test_bk_fe_prod}
+    ports:
+      - "${MYSQL_PORT:-3306}:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD:-ABCD123abcd.}"]
+      interval: 3s
+      timeout: 3s
+      retries: 10
+      start_period: 10s
+
+  backend:
+    build:
+      context: ../backend
+      dockerfile: ../ci-cd/Dockerfile.backend
+    container_name: test_bk_fe_backend
+    restart: always
+    environment:
+      MYSQL_HOST: mysqldb
+      MYSQL_PORT: 3306
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-test_bk_fe_prod}
+      MYSQL_USER: ${MYSQL_USER:-root}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-ABCD123abcd.}
+    ports:
+      - "8080:8080"
+    depends_on:
+      mysqldb:
+        condition: service_healthy
+
+  db-migrator:
+    image: mysql:8.0
+    container_name: test_bk_fe_db_migrator
+    depends_on:
+      - backend
+    environment:
+      DB_PASSWORD: ${MYSQL_ROOT_PASSWORD:-ABCD123abcd.}
+      DB_NAME: ${MYSQL_DATABASE:-test_bk_fe_prod}
+    volumes:
+      - ./scripts/import.sql:/scripts/import.sql:ro
+    entrypoint:
+      - /bin/bash
+      - -c
+      - |
+        echo "Esperando que el backend Quarkus termine de levantar en el puerto 8080..."
+        until (echo > /dev/tcp/backend/8080) >/dev/null 2>&1; do
+          sleep 1
+        done
+        echo "Backend operativo. Ejecutando import.sql..."
+        mysql -h mysqldb -u root -p$$DB_PASSWORD $$DB_NAME < /scripts/import.sql
+        echo "import.sql ejecutado exitosamente."
+    restart: "no"
+
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: ../ci-cd/Dockerfile.frontend
+    container_name: test_bk_fe_frontend
+    restart: always
+    ports:
+      - "4200:80"
+    depends_on:
+      - backend
+
+volumes:
+  mysql_data:
+

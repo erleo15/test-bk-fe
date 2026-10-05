@@ -1,0 +1,73 @@
+<div class="home-container">
+
+  <div class="home-header">
+    <h1>Bienvenido</h1>
+    <p>¿Qué deseas realizar?</p>
+  </div>
+
+  <div class="cards-container">
+    <!-- Transferencias -->
+    <mat-card class="option-card">
+      <mat-card-content>
+        <div class="icon-container">
+          <mat-icon>swap_horiz</mat-icon>
+        </div>
+        <h2> Realizar Transferencias</h2>
+        <p>
+          Realiza transferencias entre cuentas de forma rápida y segura.
+        </p>
+        <button
+          mat-raised-button
+          color="primary"
+          routerLink="/transferencias">
+          <mat-icon>arrow_forward</mat-icon>
+          Ingresar
+        </button>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Cuentas -->
+    <mat-card class="option-card">
+      <mat-card-content>
+        <div class="icon-container">
+          <mat-icon>account_balance</mat-icon>
+        </div>
+        <h2>Ver cuentas</h2>
+        <p>
+          Consulta tus cuentas, saldos actuales y estados.
+        </p>
+        <button
+          mat-raised-button
+          color="primary"
+          routerLink="/cuentas">
+          <mat-icon>arrow_forward</mat-icon>
+          Ingresar
+        </button>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Historial -->
+    <mat-card class="option-card">
+      <mat-card-content>
+        <div class="icon-container">
+          <mat-icon>history</mat-icon>
+        </div>
+
+        <h2>Historial</h2>
+
+        <p>
+          Consulta el historial de transferencias realizadas.
+        </p>
+
+        <button
+          mat-raised-button
+          color="primary"
+          routerLink="/historial_transferencias">
+          <mat-icon>arrow_forward</mat-icon>
+          Ingresar
+        </button>
+      </mat-card-content>
+    </mat-card>
+
+  </div>
+</div>

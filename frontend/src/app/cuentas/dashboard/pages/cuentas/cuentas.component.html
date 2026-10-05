@@ -1,0 +1,105 @@
+<div class="cuentas-container">
+
+  <div class="cuentas-header">
+    <div>
+      <h2>Mis cuentas</h2>
+      <p>Consulta el detalle y saldo de tus cuentas bancarias</p>
+    </div>
+  </div>
+
+  <div class="table-card">
+    <table mat-table [dataSource]="dataSource" matSort>
+      <!-- Número de cuenta -->
+      <ng-container matColumnDef="numeroCuenta">
+        <th mat-header-cell *matHeaderCellDef>
+          Número de cuenta
+        </th>
+
+        <td mat-cell *matCellDef="let cuenta">
+          <span class="numero-cuenta">
+            {{ cuenta.numeroCuenta }}
+          </span>
+        </td>
+      </ng-container>
+
+      <!-- Titular -->
+      <ng-container matColumnDef="titular">
+        <th mat-header-cell *matHeaderCellDef>
+          Titular
+        </th>
+
+        <td mat-cell *matCellDef="let cuenta">
+          {{ cuenta.identificacion }} - {{ cuenta.primerNombre }} {{ cuenta.apellidoPaterno }}
+        </td>
+      </ng-container>
+
+      <!-- Tipo de cuenta -->
+      <ng-container matColumnDef="tipoCuenta">
+        <th mat-header-cell *matHeaderCellDef>
+          Tipo de cuenta
+        </th>
+
+        <td mat-cell *matCellDef="let cuenta">
+          <span class="tipo-cuenta">
+            {{ cuenta.tipoCuenta }}
+          </span>
+        </td>
+      </ng-container>
+
+      <!-- Saldo -->
+      <ng-container matColumnDef="saldo">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          Saldo actual
+        </th>
+
+        <td mat-cell *matCellDef="let cuenta">
+          <span class="saldo">
+            {{ cuenta.saldo | currency }}
+          </span>
+        </td>
+      </ng-container>
+
+      <!-- Estado -->
+      <ng-container matColumnDef="estado">
+        <th mat-header-cell *matHeaderCellDef>
+          Estado
+        </th>
+
+        <td mat-cell *matCellDef="let cuenta">
+          <span class="estado" [class.activa]="cuenta.estado === 'Activa'"
+            [class.inactiva]="cuenta.estado === 'Inactiva'">
+            {{ cuenta.estado }}
+          </span>
+        </td>
+      </ng-container>
+
+      <!-- Acciones (Resumen) -->
+      <ng-container matColumnDef="acciones">
+        <th mat-header-cell *matHeaderCellDef>
+          Resumen
+        </th>
+
+        <td mat-cell *matCellDef="let cuenta">
+          <button mat-button color="primary" (click)="verResumen(cuenta)">
+            Ver Resumen
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns">
+      </tr>
+
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+      </tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" [pageSize]="10" showFirstLastButtons>
+    </mat-paginator>
+  </div>
+  <!-- Botón -->
+  <div class="acciones">
+    <button mat-raised-button color="primary" type="button" routerLink="/home">
+      Regresar
+    </button>
+  </div>
+</div>

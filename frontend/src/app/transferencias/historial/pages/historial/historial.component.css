@@ -1,0 +1,211 @@
+.historial-container {
+  padding: 32px;
+  background-color: #f3f4f6;
+  min-height: calc(100vh - 64px);
+}
+
+/* =========================
+   Encabezado
+   ========================= */
+
+.historial-header {
+  margin-bottom: 24px;
+
+  h2 {
+    margin: 0;
+    font-size: 26px;
+    font-weight: 600;
+    color: #2f3437;
+  }
+
+  p {
+    margin: 6px 0 0;
+    color: #6b7280;
+    font-size: 14px;
+  }
+}
+
+/* =========================
+   Filtros
+   ========================= */
+
+.filtros-card {
+  background-color: #ffffff;
+  border: 1px solid #e1e4e8;
+  border-radius: 12px;
+  padding: 20px 20px 8px 20px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.filtros-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+}
+
+.filtro-item {
+  width: 100%;
+}
+
+.filtros-acciones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+
+/* =========================
+   Tarjeta de la tabla
+   ========================= */
+
+.table-card {
+  background-color: #ffffff;
+  border: 1px solid #e1e4e8;
+  border-radius: 12px;
+  overflow: hidden;
+
+  box-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+
+/* =========================
+   Tabla
+   ========================= */
+
+table {
+  width: 100%;
+  background-color: white;
+}
+
+
+/* Encabezado */
+
+.mat-mdc-header-row {
+  background-color: #4b5563;
+}
+
+.mat-mdc-header-cell {
+  color: white;
+  font-size: 13px;
+  font-weight: 600;
+  border-bottom: none;
+}
+
+
+/* Celdas */
+
+.mat-mdc-cell {
+  color: #374151;
+  font-size: 14px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+
+/* Filas */
+
+.mat-mdc-row {
+  transition: background-color 0.2s ease;
+}
+
+.mat-mdc-row:hover {
+  background-color: #f9fafb;
+}
+
+
+/* Última fila */
+
+.mat-mdc-row:last-child .mat-mdc-cell {
+  border-bottom: none;
+}
+
+
+/* =========================
+   Número de cuenta
+   ========================= */
+
+.numero-cuenta {
+  font-weight: 500;
+  color: #374151;
+  letter-spacing: 0.3px;
+}
+
+
+/* =========================
+   Tipo de cuenta
+   ========================= */
+
+.tipo-cuenta {
+  display: inline-block;
+
+  padding: 4px 10px;
+
+  border-radius: 6px;
+
+  background-color: #f1f3f5;
+
+  color: #4b5563;
+
+  font-size: 12px;
+  font-weight: 500;
+}
+
+
+/* =========================
+   Saldo
+   ========================= */
+
+.saldo {
+  font-weight: 600;
+  color: #252a2e;
+}
+
+
+/* =========================
+   Estado
+   ========================= */
+
+.estado {
+  display: inline-block;
+
+  padding: 5px 10px;
+
+  border-radius: 20px;
+
+  font-size: 12px;
+  font-weight: 600;
+}
+
+
+/* Activa */
+
+.estado.activa {
+  background-color: #e5e7eb;
+  color: #374151;
+}
+
+
+/* Inactiva */
+
+.estado.inactiva {
+  background-color: #f3f4f6;
+  color: #6b7280;
+}
+
+
+/* =========================
+   Paginador
+   ========================= */
+
+mat-paginator {
+  border-top: 1px solid #e5e7eb;
+  background-color: #ffffff;
+}
+
+.acciones {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 20px;
+}

@@ -1,0 +1,33 @@
+FROM maven:3.9-eclipse-temurin-21 AS maven-bin
+FROM quay.io/quarkus/ubi9-quarkus-mandrel-builder-image:jdk-25 AS build
+
+USER root
+# Inject Maven runtime
+COPY --from=maven-bin /usr/share/maven /usr/share/maven
+ENV MAVEN_HOME=/usr/share/maven
+ENV PATH=/usr/share/maven/bin:${PATH}
+
+WORKDIR /code
+
+COPY pom.xml /code/
+RUN mvn dependency:go-offline -B || true
+
+COPY src /code/src
+
+RUN mvn test -Dtest="ec.com.test.application.service.*Test" -B
+
+RUN mvn clean package -Dnative -DskipTests -B
+
+FROM quay.io/quarkus/ubi9-quarkus-micro-image:2.0
+
+WORKDIR /work/
+RUN chown 1001 /work \
+    && chmod "g+rwX" /work \
+    && chown 1001:root /work
+
+COPY --from=build --chown=1001:root --chmod=0755 /code/target/*-runner /work/application
+
+EXPOSE 8080
+USER 1001
+
+ENTRYPOINT ["./application", "-Dquarkus.http.host=0.0.0.0"]

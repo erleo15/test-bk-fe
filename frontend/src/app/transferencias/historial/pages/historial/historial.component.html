@@ -1,0 +1,175 @@
+<div class="historial-container">
+  <div class="historial-header">
+    <div>
+      <h2>Historial de movimientos</h2>
+      <p>Consulta el detalle de tus transferencias y movimientos bancarios</p>
+    </div>
+  </div>
+
+  <!-- Filtros -->
+  <div class="filtros-card">
+    <div class="filtros-grid">
+      <mat-form-field appearance="outline" class="filtro-item">
+        <mat-label>Cuenta Origen</mat-label>
+        <input matInput [(ngModel)]="filtros.cuentaOrigen" (input)="onInputFiltro()" maxlength="10" placeholder="10 dígitos" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="filtro-item">
+        <mat-label>Cuenta Destino</mat-label>
+        <input matInput [(ngModel)]="filtros.cuentaDestino" (input)="onInputFiltro()" maxlength="10" placeholder="10 dígitos" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="filtro-item">
+        <mat-label>Estado</mat-label>
+        <mat-select [(ngModel)]="filtros.estado" (selectionChange)="aplicarFiltros()">
+          <mat-option value="">Todos los estados</mat-option>
+          <mat-option value="COMPLETADA">COMPLETADA</mat-option>
+          <mat-option value="RECHAZADA">RECHAZADA</mat-option>
+          <mat-option value="REQUIERE_REVISION">REQUIERE REVISIÓN</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="filtro-item">
+        <mat-label>Fecha/Hora Desde</mat-label>
+        <input matInput type="datetime-local" [(ngModel)]="filtros.fechaInicio" (ngModelChange)="aplicarFiltros()" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="filtro-item">
+        <mat-label>Fecha/Hora Hasta</mat-label>
+        <input matInput type="datetime-local" [(ngModel)]="filtros.fechaFin" (ngModelChange)="aplicarFiltros()" />
+      </mat-form-field>
+    </div>
+
+    <div class="filtros-acciones">
+      <button mat-button color="warn" (click)="limpiarFiltros()">
+        Limpiar Filtros
+      </button>
+    </div>
+  </div>
+
+  <div class="table-card">
+
+    <table mat-table [dataSource]="dataSource" matSort>
+
+      <!-- Nro. -->
+      <ng-container matColumnDef="Nro.">
+        <th mat-header-cell *matHeaderCellDef>
+          N.º
+        </th>
+
+        <td mat-cell *matCellDef="let movimiento; let i = index">
+          <span class="nro">
+            {{ (page * size) + i + 1 }}
+          </span>
+        </td>
+      </ng-container>
+
+      <!-- Número de movimiento -->
+      <ng-container matColumnDef="numeroMovimiento">
+        <th mat-header-cell *matHeaderCellDef>
+          N.º movimiento
+        </th>
+
+        <td mat-cell *matCellDef="let movimiento">
+          <span class="numero-movimiento">
+            {{ movimiento.numeroMovimiento }}
+          </span>
+        </td>
+      </ng-container>
+
+      <!-- Monto -->
+      <ng-container matColumnDef="monto">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          Monto
+        </th>
+
+        <td mat-cell *matCellDef="let movimiento">
+          <span class="monto">
+            {{ movimiento.monto | currency:'USD':'symbol':'1.2-2' }}
+          </span>
+        </td>
+      </ng-container>
+
+
+      <!-- Cuenta origen -->
+      <ng-container matColumnDef="numeroCuentaOrigen">
+        <th mat-header-cell *matHeaderCellDef>
+          Cuenta origen
+        </th>
+        <td mat-cell *matCellDef="let movimiento">
+          {{ movimiento.numeroCuentaOrigen }}
+        </td>
+      </ng-container>
+
+
+      <!-- Cuenta destino -->
+      <ng-container matColumnDef="numeroCuentaDestino">
+        <th mat-header-cell *matHeaderCellDef>
+          Cuenta destino
+        </th>
+        <td mat-cell *matCellDef="let movimiento">
+          {{ movimiento.numeroCuentaDestino }}
+        </td>
+      </ng-container>
+
+
+
+      <!-- Observación -->
+      <ng-container matColumnDef="observacion">
+        <th mat-header-cell *matHeaderCellDef>
+          Observación
+        </th>
+
+        <td mat-cell *matCellDef="let movimiento">
+          {{ movimiento.observacion || 'Sin observación' }}
+        </td>
+      </ng-container>
+
+      <!-- Estado -->
+      <ng-container matColumnDef="estado">
+        <th mat-header-cell *matHeaderCellDef>
+          Estado
+        </th>
+
+        <td mat-cell *matCellDef="let movimiento">
+          <span class="estado" [class.completada]="movimiento.estado === 'COMPLETADA'"
+            [class.rechazada]="movimiento.estado === 'RECHAZADA'"
+            [class.sospechosa]="movimiento.estado === 'REQUIERE_REVISION'">
+            {{ movimiento.estado }}
+          </span>
+        </td>
+      </ng-container>
+
+      <!-- Fecha -->
+      <ng-container matColumnDef="fechaCreacion">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          Fecha
+        </th>
+
+        <td mat-cell *matCellDef="let movimiento">
+          {{ movimiento.fechaCreacion | date:'dd/MM/yyyy HH:mm:ss.SSS' }}
+        </td>
+      </ng-container>
+
+      <!-- Header -->
+      <tr mat-header-row *matHeaderRowDef="displayedColumns">
+      </tr>
+
+      <!-- Filas -->
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+      </tr>
+
+    </table>
+
+    <mat-paginator [length]="totalElements" [pageSizeOptions]="pageSizeOptions" [pageSize]="size"
+      showFirstLastButtons>
+    </mat-paginator>
+
+  </div>
+  <!-- Botón -->
+  <div class="acciones">
+    <button mat-raised-button color="primary" type="button" routerLink="/home">
+      Regresar
+    </button>
+  </div>
+</div>
